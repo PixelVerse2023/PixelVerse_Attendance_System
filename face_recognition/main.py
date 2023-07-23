@@ -10,6 +10,8 @@ from firebase_admin import db
 from firebase_admin import storage
 from datetime import datetime
 import time
+from google.cloud import bigquery
+
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
     'databaseURL': "https://automaticattendancesystem-default-rtdb.firebaseio.com/",
@@ -18,11 +20,18 @@ firebase_admin.initialize_app(cred, {
 
 bucket = storage.bucket()
 
+# Your BigQuery project ID
+project_id = 'automaticattendancesystem'
+
+# Your BigQuery dataset ID and table ID
+dataset_id = 'report'
+table_id = 'attendance_register'
+
 cap = cv2.VideoCapture(0) 
 cap.set(3, 640)
 cap.set(4, 480)
 
-imgBackground = cv2.imread('Resources/background.png')
+imgBackground = cv2.imread('Resources/background.jpg')
 
 # Importing the mode images into a list
 folderModePath = 'Resources/Modes'
@@ -77,12 +86,84 @@ while True:
                 imgBackground = cvzone.cornerRect(imgBackground, bbox, rt=0)
                 id = studentIds[matchIndex]
                 print("detected student id", id)
+
+#inserting to BQ  ###################################################
+                studentInfo = db.reference(f'Students/{id}').get()
+
+                cred = credentials.Certificate("bigQuery_Service_Account.json")
+
+                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'bigQuery_Service_Account.json'
+
+                bucket = storage.bucket()
+
+                # Your BigQuery project ID
+                project_id = 'automaticattendancesystem'
+
+                # Your BigQuery dataset ID and table ID
+                dataset_id = 'report'
+                table_id = 'attendance_register'
+
+                # studentInfo = db.reference("Students/100859999").get()
+
+
+                current_time = datetime.now()
+                current_date = datetime.now().date()  # Get the current date
+
+
+                data = {
+                                    'Time': current_time.strftime("%H:%M:%S"),
+                                    'Program': studentInfo["major"],
+                                    'Student_Name': studentInfo["name"],
+                                    'Attendance_Date': str(current_date) ,
+                                    'Attendance':'Present',
+                                    'Course':"1001",
+                                    'studentid': studentInfo["studentid"]           
+                                              }
+
+                # Initialize the BigQuery client
+                client = bigquery.Client(project=project_id)
+
+                # Get the dataset reference
+                dataset_ref = client.dataset(dataset_id)
+
+                # Get the table reference
+                table_ref = dataset_ref.table(table_id)
+
+                # Check if the record already exists in BigQuery for the given date and subject
+                query = f"""
+                    SELECT 1
+                    FROM `{project_id}.{dataset_id}.{table_id}`
+                    WHERE studentid = {data['studentid']}
+                    AND Attendance_Date = "{datetime.now().date()}"
+                    AND Program = "{data['Program']}"
+                """
+                query_job = client.query(query)
+                result = query_job.result()
+                print(result.total_rows)
+
+                if result.total_rows > 0:
+                    # If the record already exists, skip insertion
+                    print("Record for the student ID and subject already exists for today. Skipping insertion.")
+                else:
+                    # If the record does not exist, insert the data into the table
+                    # Insert the data into the table
+                    errors = client.insert_rows_json(table_ref, [data])
+
+                    if errors == []:
+                        print("Data successfully inserted into BigQuery table.")
+                    else:
+                        print("Errors encountered while inserting data into BigQuery table:", errors)
+
+#inserting to BQ  ###################################################
+
+
                 if counter == 0:
                     cvzone.putTextRect(imgBackground, "Loading", (275, 400))
                     cv2.imshow("Face Attendance", imgBackground)
                     cv2.waitKey(1)
                     counter = 1
                     modeType = 1
+                
 
         if counter != 0:
 
