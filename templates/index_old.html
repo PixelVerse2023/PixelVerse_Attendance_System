@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BigQuery Data</title>
+</head>
+<body>
+    <h1>BigQuery Data</h1>
+    <table>
+        <thead>
+            <tr>
+                                            <th>Student ID</th>
+                                            <th>Name</th>
+                                            <th>Program</th>
+                                            <th>Date</th>
+                                             <th>Time</th>
+                                            <th>Attendance</th>
+                                        </tr>
+        </thead>
+        <tbody>
+                                    {% for row in data %}-->
+                                                <tr>-->
+                                                    <td>{{ row.StudentID }}</td>-->
+                                                    <td>{{ row.Student_Name }}</td>-->
+                                                    <td>{{ row.Program }}</td>-->
+                                                    <td>{{ row.Date }}</td>-->
+                                                    <td>{{ row.Time }}</td>-->
+                                                    <td>{{ row.Attendance }}</td>-->
+                                                    &lt;!&ndash; Add more column values if needed &ndash;&gt;-->
+                                                </tr>-->
+                                                {% endfor %}-->
+        </tbody>
+    </table>
+</body>
+</html>
