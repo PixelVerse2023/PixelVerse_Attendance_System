@@ -9,19 +9,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>SB Admin 2 - Charts</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -31,7 +28,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="templates/index.html">
@@ -43,7 +40,6 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
@@ -70,6 +66,7 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Reports</span></a>
             </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -91,13 +88,11 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
-                      <!-- Topbar Search -->
+                    <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -170,160 +165,130 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Report</h1>
-                    <p class="mb-4"> </p>
+                    <h1 class="h3 mb-2 text-gray-800">Faculty Dashboard</h1>
+                    <label for="course">Select a Course:</label>
+    <select id="course">
+        <option value="AIDI">AIDI</option>
+        <option value="Data Analytics">Data Analytics</option>
+    </select>
 
-                                                <!-- Dropdown Card -->
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <div class="col-xl-8 col-lg-7">
+
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+                            <!-- Bar Chart -->
                             <div class="card shadow mb-4">
-
-                                <!-- Card Body -->
-                                <div class="card-body" id="cardBody">
-                                    <form action="/viewreport" method="post">
-                                    <table class="table table-bordered" id="modifyTable" width="80%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <td>
-                                                <h5>From Date</h5>
-                                            </td>
-                                                <td>
-                                                <h6>To Date</h6>
-                                           </td>
-                                            <td>
-                                                <h5>Course</h5>
-                                            </td>
-                                            <td>
-                                                <h5>Student ID</h5>
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                            <input type="date" id="fromDate" name="fromDate" value="2023-01-01">
-                                            </td>
-                                            <td>
-                                            <input type="date" id="toDate" name="toDate">
-                                                <script>
-                                                  // Get the current date
-                                                  var currentDate = new Date().toISOString().slice(0, 10);
-
-                                                  // Set the current date as the value of the input field
-                                                  document.getElementById("toDate").value = currentDate;
-                                                </script>
-                                            </td>
-                                            <td>
-                                            <select id="courseSelect" name = "courseSelect">
-                                            <option value="All">Select a Course</option>
-                                            <option value="2002">AIDI-2002</option>
-                                            <option value="2001">CyberSecurity-2001</option>
-                                            </select>
-                                            </td>
-                                            <td>
-                                            <input type="Text" id="searchStudentID" name="searchStudentID" value="0">
-                                            </td>
-                                        </tbody>
-
-                                    </table>
-                                         <div>
-                                <a href="#" class="btn btn-primary btn-icon-split btn-sm" onclick="searchResults()">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-flag"></i>
-                                        </span>
-                                    <button type="submit" class="btn btn-primary">View Report</button>
-                                    </a>
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Semester Overview</h6>
                                 </div>
-                                    </form>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <canvas id="myBarChart"></canvas>
+                                    </div>
+                                    <hr>
                                 </div>
-                                <input type="hidden" id="searchType" value="">
-<script>
-function searchResults() {
-    const searchTypeValue = document.getElementById("searchType").value;
-    const rows = document.querySelectorAll('#dataTable tbody tr');
-    rows.forEach(row => {
-        row.style.display = '';
-    });
-    rows.forEach(row => {
-        const studentID = row.querySelector('td:first-child').textContent;
-        const date = row.querySelector('td:nth-child(6)').textContent;
-        const rowCourseID = row.querySelector('td:nth-child(7)').textContent;
-
-        if (searchTypeValue === 'Course') {
-            const courseSelect = document.getElementById("courseSelect");
-            console.log(courseSelect)
-            const searchCourseID = courseSelect.value;
-            if (rowCourseID === searchCourseID) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        } else if (searchTypeValue === 'Date') {
-            const searchToDate = document.getElementById("toDate").value;
-            const searchFromDate = document.getElementById("fromDate").value;
-            if (date >= searchFromDate && date <= searchToDate) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        } else if (searchTypeValue === 'studentID') {
-            const searchStudentID = document.getElementById("searchStudentID").value;
-            if (studentID === searchStudentID) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        } else {
-            row.style.display = '';
-        }
-    });
-}
-</script>
                             </div>
+<script>
+        // Sample data for 13 different days (replace this with your actual data)
+        const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7', 'Day 8', 'Day 9', 'Day 10', 'Day 11', 'Day 12', 'Day 13'];
+        const attendanceData = [10, 15, 20, 12, 8, 18, 25, 22, 16, 14, 19, 9, 13];
 
+        // Get the canvas element
+        const canvas = document.getElementById('myBarChart');
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Attendance Report</h6>
+        // Create the bar chart
+        const myBarChart = new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: 'Number of Students Attended',
+                    data: attendanceData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)', // Bar color
+                    borderColor: 'rgba(54, 162, 235, 1)', // Border color
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Name</th>
-                                            <th>Program</th>
-                                            <th>Course</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Attendance</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Name</th>
-                                            <th>Program</th>
-                                            <th>Course</th>
-                                            <th>Date</th>
-                                             <th>Time</th>
-                                            <th>Attendance</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {% for row in data %}
-                                                <tr>
-                                                    <td>{{ row.StudentID }}</td>
-                                                    <td>{{ row.Student_Name }}</td>
-                                                    <td>{{ row.Program }}</td>
-                                                    <td>{{ row.Course }}</td>
-                                                    <td>{{ row.Attendance_Date }}</td>
-                                                    <td>{{ row.Time }}</td>
-                                                    <td>{{ row.Attendance }}</td>
-                                                </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+
+                        <!-- Donut Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Daily Overview</h6>
+                                    <input type="date">
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <hr>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Retrieve attendance percentage for a student and subject (replace with your actual data)
+        const attendancePercentage = 85;
+
+        // Create the donut chart
+        const ctx = document.getElementById('myPieChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Attendance', 'Remaining'],
+                datasets: [{
+                    data: [attendancePercentage, 100 - attendancePercentage],
+                    backgroundColor: ['#28a745', '#dc3545'],
+                    hoverBackgroundColor: ['#218838', '#c82333'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            const datasets = ctx.chart.data.datasets;
+                            if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                                const sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / sum) * 100) + '%';
+                                return percentage;
+                            } else {
+                                return '';
+                            }
+                        },
+                        color: '#fff',
+                        anchor: 'center',
+                        align: 'center',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        myChart.update();
+    </script>                                </div>
                             </div>
                         </div>
                     </div>
@@ -386,11 +351,12 @@ function searchResults() {
     <script src="static/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="static/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="static/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="static/js/demo/datatables-demo.js"></script>
+    <script src="static/js/demo/chart-area-demo.js"></script>
+    <script src="static/js/demo/chart-pie-demo.js"></script>
+    <script src="static/js/demo/chart-bar-demo.js"></script>
 
 </body>
 

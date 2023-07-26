@@ -44,10 +44,9 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('faculty_dashboard') }}">
+                <a class="nav-link" href="{{ url_for('dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -59,17 +58,22 @@
 
              <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('modifyRecords') }}">
+                <a class="nav-link" href="{{ url_for('enroll_student_details') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Modify Records</span></a>
+                    <span>Attendance Enrollment</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
+                        <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Tables-->
             <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('tables') }}">
+                <a class="nav-link" href="{{ url_for('studentIndex') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Reports</span></a>
             </li>
+
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -97,7 +101,7 @@
                         </button>
                     </form>
 
-                      <!-- Topbar Search -->
+                        <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -191,9 +195,7 @@
                                             <td>
                                                 <h5>Course</h5>
                                             </td>
-                                            <td>
-                                                <h5>Student ID</h5>
-                                            </td>
+
                                         </tr>
                                     </thead>
                                         <tbody>
@@ -218,9 +220,9 @@
                                             <option value="2001">CyberSecurity-2001</option>
                                             </select>
                                             </td>
-                                            <td>
-                                            <input type="Text" id="searchStudentID" name="searchStudentID" value="0">
-                                            </td>
+
+                                            <input type="hidden" id="searchStudentID" name="searchStudentID" value="0">
+
                                         </tbody>
 
                                     </table>

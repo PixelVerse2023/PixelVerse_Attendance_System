@@ -9,16 +9,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Facerec modify records</title>
+    <title>SB Admin 2 - Tables</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template -->
     <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <!-- Custom styles for this template -->
     <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -35,7 +38,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">FaceRec Attendance<sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">FaceRec Attendance</div>
             </a>
 
             <!-- Divider -->
@@ -56,21 +59,80 @@
                 Interface
             </div>
 
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Components</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Components:</h6>
+                        <a class="collapse-item" href="templates/buttons.html">Buttons</a>
+                        <a class="collapse-item" href="templates/cards.html">Cards</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Utilities</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Utilities:</h6>
+                        <a class="collapse-item" href="templates/utilities-color.html">Colors</a>
+                        <a class="collapse-item" href="templates/utilities-border.html">Borders</a>
+                        <a class="collapse-item" href="templates/utilities-animation.html">Animations</a>
+                        <a class="collapse-item" href="templates/utilities-other.html">Other</a>
+                    </div>
+                </div>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Addons
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Pages</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Login Screens:</h6>
+                        <a class="collapse-item" href="templates/login.html">Login</a>
+                        <a class="collapse-item" href="templates/register.html">Register</a>
+                        <a class="collapse-item" href="templates/forgot-password.html">Forgot Password</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Other Pages:</h6>
+                        <a class="collapse-item" href="templates/404.html">404 Page</a>
+                        <a class="collapse-item" href="templates/blank.html">Blank Page</a>
+                    </div>
+                </div>
+            </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="templates/charts.html">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Modify Records</span></a>
+                    <span>Charts</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('tables') }}">
+            <li class="nav-item active">
+                <a class="nav-link" href="templates/tables.html">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Reports</span></a>
             </li>
@@ -96,9 +158,11 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+                    <form class="form-inline">
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </form>
 
                     <!-- Topbar Search -->
                     <form
@@ -265,8 +329,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="static/img-profile rounded-circle"
+                                    src="static/img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -299,89 +363,84 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-<!--                    <div class="row">-->
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Report</h1>
+                    <p class="mb-4"> </p>
 
-                            <!-- Modify record selection card -->
-                    <form action="/fetchrecord" method="post">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">View and Modify Records</h6>
+
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Attendance Report for Course: AIDI Date: 2023/05/29</h6>
+                                <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Dropdown Card Example</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Card Body -->
                                 <div class="card-body">
-                                    <table class="table table-bordered" id="modifyTable" width="80%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <td>Date</td>
-                                            <td>Course</td>
-                                            <td>Student ID</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><input type="date" id="modifyDate" name="modifyDate"></td>
-                                           <td><select id="modifyCourse" name="modifyCourse">
-                                                <option value="Select">Select</option>
-                                              <option value="2001">2001</option>
-                                              <option value="2002">2002</option>
-                                            </select>
-                                            </td>
-                                            <td><input type="text" id="modifyStuID" name="modifyStuID"></td>
-                                        </tr>
-                                    </tbody>
-                                    </table>
-                                    <button type="submit" class="btn btn-primary">Fetch Record</button>
+                                    Dropdown menus can be placed in the card header in order to extend the functionality
+                                    of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
+                                    icon in the card header can be clicked on in order to toggle a dropdown menu.
                                 </div>
-                            </div>
-                    </form>
-<!--                        </div>-->
-                            <!-- Results card -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Results</h6>
-                                </div>
+                        </div>
                                 <div class="card-body">
-<!--                                    Result Table-->
-                                    <div class="table-responsive">
+                            <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Student ID</th>
                                             <th>Name</th>
                                             <th>Program</th>
-                                            <th>Course</th>
                                             <th>Date</th>
-                                            <th>Time</th>
+                                             <th>Time</th>
                                             <th>Attendance</th>
                                         </tr>
                                     </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>Name</th>
+                                            <th>Program</th>
+                                            <th>Date</th>
+                                             <th>Time</th>
+                                            <th>Attendance</th>
+                                        </tr>
+                                    </tfoot>
                                     <tbody>
-                                        {% if result %}
+                                        {% for row in data %}
                                                 <tr>
-                                                    <td>{{ row['StudentID'] }}</td>
-                                                    <td>{{ row['Student_Name'] }}</td>
-                                                    <td>{{ row['Program'] }}</td>
-                                                    <td>{{ row['Course'] }}</td>
-                                                    <td>{{ row['Attendance_Date'] }}</td>
-                                                    <td>{{ row['Time'] }}</td>
-                                                    <th><select>
-                                                        <option value="{{ row['Attendance'] }}" selected>{{ row['Attendance'] }}</option>
-                                                        <option value="{{ 'Absent' if row['Attendance']=='Present' else 'Present' }}">{{ 'Absent' if row['Attendance']=='Present' else 'Present' }}</option>
-                                                        </select>
-                                                    </th>
+                                                    <td>{{ row.StudentID }}</td>
+                                                    <td>{{ row.Student_Name }}</td>
+                                                    <td>{{ row.Program }}</td>
+                                                    <td>{{ row.Date }}</td>
+                                                    <td>{{ row.Time }}</td>
+                                                    <td>{{ row.Attendance }}</td>
                                                 </tr>
-                                        {% endif %}
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-<!--                                    Yellow button-->
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-exclamation-triangle"></i>
-                                        </span>
-                                        <span class="text">Modify Record</span>
-                                    </a>
-                                </div>
-                            </div>
+                        </div>
+                        </div>
+
+                    </div>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -439,6 +498,13 @@
 
     <!-- Custom scripts for all pages-->
     <script src="static/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="static/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="static/js/demo/datatables-demo.js"></script>
 
 </body>
 

@@ -9,19 +9,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Facerec modify records</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -38,7 +35,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">FaceRec Attendance</div>
+                <div class="sidebar-brand-text mx-3">FaceRec Attendance<sup>2</sup></div>
             </a>
 
             <!-- Divider -->
@@ -91,13 +88,11 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
-                      <!-- Topbar Search -->
+                    <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -169,124 +164,49 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Report</h1>
-                    <p class="mb-4"> </p>
+<!--                    <div class="row">-->
 
-                                                <!-- Dropdown Card -->
+                            <!-- Modify record selection card -->
+                    <form action="/fetchrecord" method="post">
                             <div class="card shadow mb-4">
-
-                                <!-- Card Body -->
-                                <div class="card-body" id="cardBody">
-                                    <form action="/viewreport" method="post">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">View and Modify Records</h6>
+                                </div>
+                                <div class="card-body">
                                     <table class="table table-bordered" id="modifyTable" width="80%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <td>
-                                                <h5>From Date</h5>
-                                            </td>
-                                                <td>
-                                                <h6>To Date</h6>
-                                           </td>
-                                            <td>
-                                                <h5>Course</h5>
-                                            </td>
-                                            <td>
-                                                <h5>Student ID</h5>
-                                            </td>
+                                            <td>Date</td>
+                                            <td>Course</td>
+                                            <td>Student ID</td>
                                         </tr>
                                     </thead>
-                                        <tbody>
+                                    <tbody>
                                         <tr>
-                                            <td>
-                                            <input type="date" id="fromDate" name="fromDate" value="2023-01-01">
-                                            </td>
-                                            <td>
-                                            <input type="date" id="toDate" name="toDate">
-                                                <script>
-                                                  // Get the current date
-                                                  var currentDate = new Date().toISOString().slice(0, 10);
-
-                                                  // Set the current date as the value of the input field
-                                                  document.getElementById("toDate").value = currentDate;
-                                                </script>
-                                            </td>
-                                            <td>
-                                            <select id="courseSelect" name = "courseSelect">
-                                            <option value="All">Select a Course</option>
-                                            <option value="2002">AIDI-2002</option>
-                                            <option value="2001">CyberSecurity-2001</option>
+                                            <td><input type="date" id="modifyDate" name="modifyDate"></td>
+                                           <td><select id="modifyCourse" name="modifyCourse">
+                                                <option value="Select">Select</option>
+                                              <option value="2001">2001</option>
+                                              <option value="2002">2002</option>
                                             </select>
                                             </td>
-                                            <td>
-                                            <input type="Text" id="searchStudentID" name="searchStudentID" value="0">
-                                            </td>
-                                        </tbody>
-
+                                            <td><input type="text" id="modifyStuID" name="modifyStuID"></td>
+                                        </tr>
+                                    </tbody>
                                     </table>
-                                         <div>
-                                <a href="#" class="btn btn-primary btn-icon-split btn-sm" onclick="searchResults()">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-flag"></i>
-                                        </span>
-                                    <button type="submit" class="btn btn-primary">View Report</button>
-                                    </a>
+                                    <button type="submit" class="btn btn-primary">Fetch Record</button>
                                 </div>
-                                    </form>
-                                </div>
-                                <input type="hidden" id="searchType" value="">
-<script>
-function searchResults() {
-    const searchTypeValue = document.getElementById("searchType").value;
-    const rows = document.querySelectorAll('#dataTable tbody tr');
-    rows.forEach(row => {
-        row.style.display = '';
-    });
-    rows.forEach(row => {
-        const studentID = row.querySelector('td:first-child').textContent;
-        const date = row.querySelector('td:nth-child(6)').textContent;
-        const rowCourseID = row.querySelector('td:nth-child(7)').textContent;
-
-        if (searchTypeValue === 'Course') {
-            const courseSelect = document.getElementById("courseSelect");
-            console.log(courseSelect)
-            const searchCourseID = courseSelect.value;
-            if (rowCourseID === searchCourseID) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        } else if (searchTypeValue === 'Date') {
-            const searchToDate = document.getElementById("toDate").value;
-            const searchFromDate = document.getElementById("fromDate").value;
-            if (date >= searchFromDate && date <= searchToDate) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        } else if (searchTypeValue === 'studentID') {
-            const searchStudentID = document.getElementById("searchStudentID").value;
-            if (studentID === searchStudentID) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        } else {
-            row.style.display = '';
-        }
-    });
-}
-</script>
                             </div>
-
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Attendance Report</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
+                    </form>
+<!--                        </div>-->
+                            <!-- Results card -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Results</h6>
+                                </div>
+                                <div class="card-body">
+<!--                                    Result Table-->
+                                    <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -299,35 +219,43 @@ function searchResults() {
                                             <th>Attendance</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Name</th>
-                                            <th>Program</th>
-                                            <th>Course</th>
-                                            <th>Date</th>
-                                             <th>Time</th>
-                                            <th>Attendance</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
-                                        {% for row in data %}
+                                        {% if result %}
                                                 <tr>
-                                                    <td>{{ row.StudentID }}</td>
-                                                    <td>{{ row.Student_Name }}</td>
-                                                    <td>{{ row.Program }}</td>
-                                                    <td>{{ row.Course }}</td>
-                                                    <td>{{ row.Attendance_Date }}</td>
-                                                    <td>{{ row.Time }}</td>
-                                                    <td>{{ row.Attendance }}</td>
+                                                    <td>{{ row['StudentID'] }}</td>
+                                                    <td>{{ row['Student_Name'] }}</td>
+                                                    <td>{{ row['Program'] }}</td>
+                                                    <td>{{ row['Course'] }}</td>
+                                                    <td>{{ row['Attendance_Date'] }}</td>
+                                                    <td>{{ row['Time'] }}</td>
+                                                    <th><select id="modifyAttendance" onchange="document.getElementById('mAttendance').value = document.getElementById('modifyAttendance').value">
+                                                        <option value="{{ row['Attendance'] }}" selected>{{ row['Attendance'] }}</option>
+                                                        <option value="{{ 'Absent' if row['Attendance']=='Present' else 'Present' }}">{{ 'Absent' if row['Attendance']=='Present' else 'Present' }}</option>
+                                                        </select>
+                                                    </th>
                                                 </tr>
-                                        {% endfor %}
+                                        {% endif %}
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-
+                                    <form action="/modifyattendanceDB" method="post">
+                                        {% if result %}
+                                        <input type="hidden" name="mID" value="{{ row['StudentID'] }}">
+                                        <input type="hidden" name="mCourse" value="{{ row['Course'] }}">
+                                        <input type="hidden" name="mDate" value="{{ row['Attendance_Date'] }}">
+                                        <input type="hidden" name="mAttendance" id="mAttendance" value="">
+                                        {% endif %}
+                                        <!--                                    Yellow button-->
+                                    <button type="submit" class="btn btn-warning btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span class="text">Modify Record</span>
+                                        </button>
+                                        <label type="text" name="updateMsg" value="{{ DB_message }}"></label>
+                                        </form>
+                                </div>
+                            </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -384,13 +312,6 @@ function searchResults() {
 
     <!-- Custom scripts for all pages-->
     <script src="static/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="static/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="static/js/demo/datatables-demo.js"></script>
 
 </body>
 
