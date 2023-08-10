@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #008864;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #ffffff; /* Change header text color to white */
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background: linear-gradient(#008864, #00563c);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            color: #ffffff; /* Change form text color to white */
+        }
+
+        form label {
+            display: inline-block;
+            width: 150px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        form input[type="text"] {
+            width: 250px;
+            padding: 10px; /* Increase padding for better visual appearance */
+            margin-bottom: 10px;
+            border: 2px solid #ddd; /* Add a border to the input fields */
+            border-radius: 5px;
+            background-color: #f0f0f0; /* Change input field background color */
+            color: #333; /* Change input text color */
+        }
+
+        form input[type="text"]:focus {
+            outline: none;
+            border-color: #4CAF50; /* Change border color on focus */
+        }
+
+        form button {
+            margin-top: 20px; /* Decrease the top margin for better alignment */
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #ffffff; /* Change button text color to white */
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #008864; /* Change button color on hover */
+        }
+
+        video,
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Details Form</h1>
+
+    <form method="POST" action="/submit">
+        <label for="name">First Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="name">Last Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="roll_number">Student Number:</label>
+        <input type="text" id="roll_number" name="roll_number" required><br>
+
+        <label for="program_name">Program Name:</label>
+        <input type="text" id="program_name" name="program_name" required><br>
+
+        <button type="button" onclick="capturePhoto()">Capture Photo</button><br>
+
+        <video id="video" width="640" height="480" autoplay></video><br>
+
+        <canvas id="canvas" width="640" height="480"></canvas><br>
+
+        <input type="hidden" id="image_data" name="image_data" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Access the webcam and display the video stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(error) {
+                console.log('Error accessing the webcam:', error);
+            });
+
+        // Capture the photo from the video stream and display it on the canvas
+        function capturePhoto() {
+            var video = document.getElementById('video');
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            var image_data = canvas.toDataURL('image/png');
+            document.getElementById('image_data').value = image_data;
+        }
+    </script>
+</body>
+</html>
